@@ -3,7 +3,7 @@ import numpy as np
 # 目标函数：弹簧重量
 def spring_weight(x):
     d, D, N = x
-    return (np.pi ** 2) * D * (d ** 2) * N / 4  # 计算弹簧重量  这里可以理解背诵python运算公式
+    return (np.pi ** 2) * D * (d ** 2) * N / 4  # 计算弹簧重量
     
 
 # 约束条件
@@ -109,3 +109,24 @@ def gwo(obj_func, dim, lb, ub, max_iter=100, pop_size=20):
         history.append((Alpha_pos.copy(), Alpha_score))
 
     return Alpha_pos, Alpha_score, history
+
+if __name__ == "__main__":
+    # 设计变量维度
+    dim = 3
+    # 变量下限
+    lb = np.array([0.05, 0.25, 2.0])
+    # 变量上限
+    ub = np.array([2.0, 1.3, 15.0])
+
+    # 运行次数
+    test_times = 5  # 可根据需要修改
+
+    results = []
+    for i in range(test_times):
+        best_x, best_score, history = gwo(fitness, dim, lb, ub, max_iter=100, pop_size=20)
+        results.append((best_x, best_score))
+        print(f"第{i+1}组最优参数: d={best_x[0]:.4f}, D={best_x[1]:.4f}, N={best_x[2]:.4f}，最小重量={best_score:.4f}")
+
+    print("\n所有结果对比：")
+    for idx, (x, score) in enumerate(results):
+        print(f"第{idx+1}组: d={x[0]:.4f}, D={x[1]:.4f}, N={x[2]:.4f}，最小重量={score:.4f}")
